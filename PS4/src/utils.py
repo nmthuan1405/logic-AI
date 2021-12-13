@@ -1,22 +1,28 @@
-OR = ' OR '
+from logic import Clause, KnowledgeBase
 
 def read_input(file_name):
-    alpha = None
-    KB = []
+    alpha = Clause()
+    KB = KnowledgeBase()
 
     with open(file_name, 'r') as f:
-        alpha = parse_clause(f.readline().rstrip())
+        alpha = Clause.parse(f.readline().rstrip())
         n = int(f.readline())
         for i in range(n):
-            KB.append(parse_clause(f.readline().rstrip()))
+            KB.append(Clause.parse(f.readline().rstrip()))
     
     return alpha, KB
 
-def parse_clause(clause_str):
-    clause = []
-    for literal in clause_str.split(OR):
-        literal = literal.replace(' ', '')
-        if literal != '':
-            clause.append(literal)
-
-    return clause
+def write_output(file_name, result):
+    res, clauses, count = result
+    with open(file_name, 'w') as f:
+        for i in range(0, len(count)-1):
+            begin = count[i]
+            end = count[i+1]
+            f.write(str(end - begin) + '\n')
+            for clause in clauses[begin:end]:
+                f.write(clause.to_string() + '\n')
+        
+        if res:
+            f.write('YES\n')
+        else:
+            f.write('NO\n')
