@@ -1,6 +1,7 @@
 from __future__ import annotations
 OR = ' OR '
 
+saved = {}
 class Literal(str):
     def abs(self):
         if self[0] == '-':
@@ -94,6 +95,8 @@ class KnowledgeBase(list):
 
 
 def pl_resolution(KB: KnowledgeBase, alpha: Clause):
+    saved.clear()
+    print('--------------------------------------------------------------')
     clauses = KB + ~alpha
     new = KnowledgeBase()
 
@@ -114,6 +117,11 @@ def pl_resolution(KB: KnowledgeBase, alpha: Clause):
         count.append(len(clauses))
 
         if result is not None:
+            for clause in clauses[count[0]:]:
+                _clause = clause.to_string()
+                _origin = saved[_clause]
+                print(f'& {_clause: <10}\t& ({_origin[0]}) hợp giải với ({_origin[1]})')
+
             return result, clauses, count
 
 def pl_resolve(clause1: Clause, clause2: Clause) -> KnowledgeBase:
@@ -121,5 +129,8 @@ def pl_resolve(clause1: Clause, clause2: Clause) -> KnowledgeBase:
     for literal1 in clause1:
         if ~literal1 in clause2:
             resolvents.append(clause1.remove_literal(literal1) + clause2.remove_literal(~literal1))
+            
+            if resolvents[-1].to_string() not in saved.keys():
+                saved[resolvents[-1].to_string()] = (clause1.to_string(), clause2.to_string())
     
-    return resolvents
+    return resolvents   
