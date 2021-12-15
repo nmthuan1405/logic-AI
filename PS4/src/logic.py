@@ -120,7 +120,7 @@ def pl_resolution(KB: KnowledgeBase, alpha: Clause):
             for clause in clauses[count[0]:]:
                 _clause = clause.to_string()
                 _origin = saved[_clause]
-                print(f'& {_clause: <10}\t& ({_origin[0]}) hợp giải với ({_origin[1]})')
+                print(f'& {_clause: <10}\t& ({_origin[0]}) hợp giải với ({_origin[1]}) \t\\\\')
 
             return result, clauses, count
 
@@ -130,7 +130,7 @@ def pl_resolve(clause1: Clause, clause2: Clause) -> KnowledgeBase:
         if ~literal1 in clause2:
             resolvents.append(clause1.remove_literal(literal1) + clause2.remove_literal(~literal1))
             
-            if resolvents[-1].to_string() not in saved.keys():
+            if len(resolvents) > 0 and resolvents[-1].to_string() not in saved.keys():
                 saved[resolvents[-1].to_string()] = (clause1.to_string(), clause2.to_string())
     
     return resolvents   
