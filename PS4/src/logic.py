@@ -54,6 +54,9 @@ class Clause(list):
         return result
 
     def __invert__(self) -> KnowledgeBase:
+        if True in self:
+            return KnowledgeBase([])
+            
         result = KnowledgeBase()
         for literal in self:
             result.append(Clause(~literal))

@@ -1,4 +1,5 @@
 from logic import Clause, KnowledgeBase
+import re
 
 def read_input(file_name):
     alpha = Clause()
