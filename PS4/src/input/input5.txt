@@ -1,0 +1,6 @@
+-C OR -D OR -E OR F
+4
+-D OR -F
+-C OR -E OR F
+C OR F
+-A OR -D OR -E
